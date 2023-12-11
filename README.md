@@ -6,7 +6,7 @@ UVision is a SwiftUI project for setting and tracking both large and small goals
 
 The UVision app allows users to define and manage both long-term (large) goals and short-term (small) goals. The app provides a user-friendly interface for creating, updating, and visualizing progress on goals.
 
-##Contribution
+## Contribution
 Created by: Kayla Anderson
 Email: kayanderson@chapman.edu
 Student ID: 2379132
