@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    // State variable to track the selected tab
     @State private var selection = 2
     var body: some View {
         VStack{
@@ -18,8 +19,7 @@ struct ContentView: View {
                     .shadow(radius: /*@START_MENU_TOKEN@*/9/*@END_MENU_TOKEN@*/)
                     .foregroundColor((Color(red: 252/255, green: 234/255, blue: 212/255)))
                 
-                    
-        
+                // Logo image placed in the header
                 Image("UVLogo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -28,15 +28,19 @@ struct ContentView: View {
                     .padding(.top, -40.0)
                     .padding(.bottom, -20.0)
             }
+            // TabView for displaying different views based on the selected tab
             TabView(selection: $selection) {
+                // LargeGoalView as the content of the first tab
                 LargeGoalView()
                     .tabItem {
                         Image("star")
                     }.tag(1)
+                // HomepageView as the content of the second tab
                 HomepageView()
                     .tabItem {
                         Image("home")
                     }.tag(2)
+                // SmallGoalView as the content of the third tab
                 SmallGoalView()
                     .tabItem {
                         Image("checkbox")
@@ -46,8 +50,10 @@ struct ContentView: View {
     }
 }
 
+// Preview provider for ContentView
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
+        // Preview ContentView with environment objects for LargeGoalViewModel and SmallGoalViewModel
         ContentView()
             .environmentObject(LargeGoalViewModel())
             .environmentObject(SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel()))

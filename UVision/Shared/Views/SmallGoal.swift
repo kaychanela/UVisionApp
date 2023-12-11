@@ -9,6 +9,7 @@ import Foundation
 
 import SwiftUI
 
+// View for displaying a list of small goals
 struct SmallGoalView: View {
     @EnvironmentObject var smallGoalViewModel: SmallGoalViewModel
     @EnvironmentObject var largeGoalViewModel: LargeGoalViewModel
@@ -16,12 +17,14 @@ struct SmallGoalView: View {
         NavigationView{
             VStack {
                 List {
+                    // Iterate over small goals and display each in SmallGoalListView
                     ForEach(smallGoalViewModel.goals) { goal in
                         SmallGoalListView(goal: goal)
                             .background(NavigationLink(destination: SmallGoalDetail(selectedGoal: goal)) {
                                 EmptyView()
                             })
                     }
+                    // Enable deletion and reordering of goals
                     .onDelete(perform: smallGoalViewModel.deleteGoal)
                     .onMove(perform: smallGoalViewModel.moveGoal)
                 }.listStyle(PlainListStyle())
@@ -36,39 +39,43 @@ struct SmallGoalView: View {
     }
 }
 
+// View for adding a new small goal
 struct AddSmallGoalView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var smallGoalViewModel: SmallGoalViewModel
     @EnvironmentObject var largeGoalViewModel: LargeGoalViewModel
+    
+    // Input fields for the new small goal
     @State var userTitleInput: String = ""
     @State var userDescriptionInput: String = ""
     
+    // Selected large goal associated with the small goal
     @State var selectedLargeGoal: LargeGoalItem? = nil
     
     var body: some View {
         NavigationView{
             ScrollView {
                 VStack {
+                    // Input field for small goal title
                     TextField("Name Your Small Goal: ", text: $userTitleInput)
                         .padding(.horizontal)
                         .frame(height: 55)
                         .background(Color(red: 243/255, green: 246/255, blue: 244/255))
                         .cornerRadius(10)
-                    
+                    // Input field for small goal description
                     TextField("Describe Your Small Goal: ", text: $userDescriptionInput)
                         .padding(.horizontal)
                         .frame(height: 100)
                         .background(Color(red: 243/255, green: 246/255, blue: 244/255))
                         .cornerRadius(10)
-                    
+                    // Picker for selecting associated large goal
                     Picker(selection: $selectedLargeGoal, label: Text("Select Large Goal")) {
                                 ForEach(largeGoalViewModel.goals) { goal in
                                     Text(goal.title).tag(goal)
                                 }
                             }
                             .pickerStyle(.menu)
-                    
-                    
+                    // Button to save the new small goal
                     Button(action: saveSmallGoal, label: {
                         Text("SAVE SMALL GOAL")
                             .foregroundColor(.white)
@@ -84,13 +91,13 @@ struct AddSmallGoalView: View {
             .navigationTitle("Define Your Small Goal")
         }
     }
-    
+    // Function to save the new small goal
     func saveSmallGoal() {
         smallGoalViewModel.addGoal(title: userTitleInput, description: userDescriptionInput, largeGoal: selectedLargeGoal)
         presentationMode.wrappedValue.dismiss()
     }
 }
-
+// View for displaying details of a small goal
 struct SmallGoalDetail: View {
     @EnvironmentObject var smallGoalViewModel: SmallGoalViewModel
     @EnvironmentObject var largeGoalViewModel: LargeGoalViewModel
@@ -100,6 +107,7 @@ struct SmallGoalDetail: View {
         NavigationView{
             ScrollView {
                 VStack(alignment: .leading) {
+                    // Display small goal title
                     HStack {
                         Text("Small Goal:")
                             .font(.title)
@@ -107,6 +115,7 @@ struct SmallGoalDetail: View {
                         Text(selectedGoal.title)
                             .font(.title3)
                     }.padding(.vertical, 2.0)
+                    // Display small goal description
                     HStack {
                         Text("Description:")
                             .font(.title)
@@ -114,6 +123,7 @@ struct SmallGoalDetail: View {
                         Text(selectedGoal.description)
                             .font(.title2)
                     }.padding(.vertical, 2.0)
+                    // Display associated large goal title
                     HStack {
                         Text("Main Goal:")
                             .font(.title)
@@ -121,6 +131,7 @@ struct SmallGoalDetail: View {
                         Text(selectedGoal.largeGoal?.title ?? "None")
                             .font(.title2)
                     }.padding(.vertical, 8.0)
+                    // Button to update the completion status of the small goal
                     Button(action: {
                         completeGoal(goal: selectedGoal)
                     }) {
@@ -142,6 +153,7 @@ struct SmallGoalDetail: View {
             .navigationTitle("Small Goal Details: ✩")
         }
     }
+    // Function to update the completion status of the small goal
     func completeGoal(goal: SmallGoalItem) {
         if let index = smallGoalViewModel.goals.firstIndex(where: { $0.id == goal.id }) {
             smallGoalViewModel.goals[index].isDone.toggle()
@@ -149,7 +161,7 @@ struct SmallGoalDetail: View {
     }
 }
 
-
+// Preview provider for SmallGoalDetail
 struct SmallGoalDetail_Previews: PreviewProvider {
     static var previews: some View {
         let largeGoalViewModel = LargeGoalViewModel()
@@ -160,7 +172,7 @@ struct SmallGoalDetail_Previews: PreviewProvider {
             .environmentObject(smallGoalViewModel)
     }
 }
-
+// Preview provider for SmallGoalView
 struct SmallGoalView_Previews: PreviewProvider {
     static var previews: some View {
             SmallGoalView()
@@ -168,7 +180,7 @@ struct SmallGoalView_Previews: PreviewProvider {
             .environmentObject(SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel()))
     }
 }
-
+// Preview provider for AddSmallGoalView
 struct AddSmallGoalView_Previews: PreviewProvider {
     static var previews: some View {
             AddSmallGoalView()
