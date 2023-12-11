@@ -19,10 +19,11 @@ struct UVisionApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-            // Provide the SmallGoalViewModel as an environment object to ContentView
-            .environmentObject(SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel()))
             // Provide the LargeGoalViewModel as an environment object to ContentView
             .environmentObject(largeGoalViewModel)
+            // Provide the SmallGoalViewModel as an environment object to ContentView
+            .environmentObject(SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel()))
+
         }
     }
 }

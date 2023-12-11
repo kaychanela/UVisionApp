@@ -13,8 +13,8 @@ import SwiftUI
 struct HomepageView : View {
     
     // Access small and large goal view models from the environment
-    @EnvironmentObject var smallGoalViewModel: SmallGoalViewModel
     @EnvironmentObject var largeGoalViewModel: LargeGoalViewModel
+    @EnvironmentObject var smallGoalViewModel: SmallGoalViewModel
     
     var body: some View {
         NavigationView{

@@ -12,21 +12,22 @@ import SwiftUI
 
 // View for displaying a list of large goals
 struct LargeGoalView : View {
-    @EnvironmentObject var largeGoalViewMode: LargeGoalViewModel
+    @EnvironmentObject var largeGoalViewModel: LargeGoalViewModel
+    @EnvironmentObject var smallGoalViewModel: SmallGoalViewModel
     var body: some View {
         NavigationView{
             VStack {
                 List{
                     // Iterate over large goals and display each in LargeGoalListView
-                    ForEach(largeGoalViewMode.goals) { goal in
+                    ForEach(largeGoalViewModel.goals) { goal in
                             LargeGoalListView(goal: goal)
                                 .background(NavigationLink(destination: LargeGoalDetail(selectedGoal: goal)) {
                                     EmptyView()
                                 })
                         }
                     // Enable deletion and reordering of goals
-                    .onDelete(perform: largeGoalViewMode.deleteGoal)
-                    .onMove(perform: largeGoalViewMode.moveGoal)
+                    .onDelete(perform: largeGoalViewModel.deleteGoal)
+                    .onMove(perform: largeGoalViewModel.moveGoal)
                 }.listStyle(PlainListStyle())
                     .navigationTitle("Start Setting Goals! ✩")
                     .navigationBarItems(
@@ -44,6 +45,7 @@ struct LargeGoalView : View {
 struct AddLargeGoalView: View{
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var largeGoalViewModel: LargeGoalViewModel
+    @EnvironmentObject var smallGoalViewModel: SmallGoalViewModel
     
     // Input fields for the new goal
     @State var userTitleInput: String = ""
@@ -114,6 +116,7 @@ struct AddLargeGoalView: View{
 // View for displaying details of a large goal
 struct LargeGoalDetail: View {
     @EnvironmentObject var largeGoalViewModel: LargeGoalViewModel
+    @EnvironmentObject var smallGoalViewModel: SmallGoalViewModel
     @State private var isDone: Bool
     let selectedGoal: LargeGoalItem
     
@@ -193,7 +196,8 @@ struct LargeGoalDetail_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = LargeGoalViewModel()
             LargeGoalDetail(selectedGoal: viewModel.goals[0])
-            .environmentObject(viewModel)
+            .environmentObject(LargeGoalViewModel())
+            .environmentObject(SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel()))
     }
 }
 
@@ -202,13 +206,15 @@ struct LargeGoalView_Previews: PreviewProvider {
     static var previews: some View {
             LargeGoalView()
             .environmentObject(LargeGoalViewModel())
+            .environmentObject(SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel()))
     }
 }
 // Preview provider for AddLargeGoalView
 struct AddLargeGoalView_Previews: PreviewProvider {
     static var previews: some View {
             AddLargeGoalView()
-        .environmentObject(LargeGoalViewModel())
+            .environmentObject(LargeGoalViewModel())
+            .environmentObject(SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel()))
     }
 }
 
