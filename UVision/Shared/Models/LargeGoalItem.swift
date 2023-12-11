@@ -17,7 +17,7 @@ struct RGBColor: Codable {
 }
 
 // LargeGoalItem structure conforming to Identifiable, Codable, and Hashable protocols
-struct LargeGoalItem: Identifiable, Codable, Hashable{
+struct LargeGoalItem: Identifiable, Codable{
     
     // Unique identifier for each LargeGoalItem instance
     let id = UUID()
@@ -28,12 +28,4 @@ struct LargeGoalItem: Identifiable, Codable, Hashable{
     var compeltionDate: Date = Date()
     var associatedColor: RGBColor
     
-    // Hashing function for Hashable protocol
-    func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
-        // Equality check function for Equatable protocol
-        static func == (lhs: LargeGoalItem, rhs: LargeGoalItem) -> Bool {
-            return lhs.id == rhs.id
-        }
 }

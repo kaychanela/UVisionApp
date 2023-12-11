@@ -52,6 +52,10 @@ struct AddSmallGoalView: View {
     // Selected large goal associated with the small goal
     @State var selectedLargeGoal: LargeGoalItem? = nil
     
+    //index for picker
+    @State private var selectedLargeGoalIndex: Int? = nil
+
+    
     var body: some View {
         NavigationView{
             ScrollView {
@@ -69,12 +73,13 @@ struct AddSmallGoalView: View {
                         .background(Color(red: 243/255, green: 246/255, blue: 244/255))
                         .cornerRadius(10)
                     // Picker for selecting associated large goal
-                    Picker(selection: $selectedLargeGoal, label: Text("Select Large Goal")) {
-                                ForEach(largeGoalViewModel.goals) { goal in
-                                    Text(goal.title).tag(goal)
-                                }
-                            }
-                            .pickerStyle(.menu)
+                    Picker(selection: $selectedLargeGoalIndex, label: Text("Select Large Goal")) {
+                        ForEach(0..<largeGoalViewModel.goals.count, id: \.self) { index in
+                            Text(largeGoalViewModel.goals[index].title).tag(index)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    
                     // Button to save the new small goal
                     Button(action: saveSmallGoal, label: {
                         Text("SAVE SMALL GOAL")
@@ -93,7 +98,7 @@ struct AddSmallGoalView: View {
     }
     // Function to save the new small goal
     func saveSmallGoal() {
-        smallGoalViewModel.addGoal(title: userTitleInput, description: userDescriptionInput, largeGoal: selectedLargeGoal)
+        smallGoalViewModel.addGoal(title: userTitleInput, description: userDescriptionInput, largeGoal: largeGoalViewModel.goals[selectedLargeGoalIndex ?? 0])
         presentationMode.wrappedValue.dismiss()
     }
 }
