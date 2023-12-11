@@ -152,26 +152,28 @@ struct SmallGoalDetail: View {
 
 struct SmallGoalDetail_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = SmallGoalViewModel()
-        SmallGoalDetail(selectedGoal: viewModel.goals[0])
-        .environmentObject(viewModel)
-        .environmentObject(LargeGoalViewModel())
+        let largeGoalViewModel = LargeGoalViewModel()
+        let smallGoalViewModel = SmallGoalViewModel(largeGoalViewModel: largeGoalViewModel)
+        
+        return SmallGoalDetail(selectedGoal: smallGoalViewModel.goals[0])
+            .environmentObject(largeGoalViewModel)
+            .environmentObject(smallGoalViewModel)
     }
 }
 
 struct SmallGoalView_Previews: PreviewProvider {
     static var previews: some View {
             SmallGoalView()
-        .environmentObject(SmallGoalViewModel())
-        .environmentObject(LargeGoalViewModel())
+            .environmentObject(LargeGoalViewModel())
+            .environmentObject(SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel()))
     }
 }
 
 struct AddSmallGoalView_Previews: PreviewProvider {
     static var previews: some View {
             AddSmallGoalView()
-        .environmentObject(SmallGoalViewModel())
-        .environmentObject(LargeGoalViewModel())
+            .environmentObject(LargeGoalViewModel())
+            .environmentObject(SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel()))
 
     }
 }

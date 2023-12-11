@@ -11,11 +11,12 @@ import Foundation
 class SmallGoalViewModel: ObservableObject {
     
     @Published var goals: [SmallGoalItem] = []
-    @Published var largeGoals: [LargeGoalItem] = []
+    @Published var largeGoalViewModel: LargeGoalViewModel
 
-    init() {
-        getGoals()
-    }
+    init(largeGoalViewModel: LargeGoalViewModel) {
+            self.largeGoalViewModel = largeGoalViewModel
+            getGoals()
+        }
     
     func getGoals() {
         let newGoals = [

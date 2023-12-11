@@ -10,12 +10,13 @@ import SwiftUI
 @main
 struct UVisionApp: App {
     @StateObject var largeGoalViewModel: LargeGoalViewModel = LargeGoalViewModel()
-    @StateObject var smallGoalViewModel: SmallGoalViewModel = SmallGoalViewModel()
+    @StateObject var smallGoalViewModel: SmallGoalViewModel = SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel())
+
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-            .environmentObject(smallGoalViewModel)
+            .environmentObject(SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel()))
             .environmentObject(largeGoalViewModel)
         }
     }

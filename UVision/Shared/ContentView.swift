@@ -49,7 +49,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-        .environmentObject(LargeGoalViewModel())
-        .environmentObject(SmallGoalViewModel())
+            .environmentObject(LargeGoalViewModel())
+            .environmentObject(SmallGoalViewModel(largeGoalViewModel: LargeGoalViewModel()))
     }
 }
